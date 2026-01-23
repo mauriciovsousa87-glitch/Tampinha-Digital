@@ -40,7 +40,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoToRegister, db, onRefreshDB,
               <span className="text-nada-nos-para">Nada nos para!</span>
             </div>
           </div>
-          <h1 className="text-2xl font-black text-white italic tracking-tighter uppercase mb-1">Acesso ao Sistema</h1>
+          <h1 className="text-2xl font-black text-white italic tracking-tighter uppercase mb-1">Tampinha Digital</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
