@@ -4,11 +4,6 @@ import {
   RewardItem, Order, OrderStatus, AuditLog 
 } from './types';
 
-// O SDK do Supabase será injetado via importmap ou CDN no index.html
-// Aqui definimos as credenciais que o sistema buscará
-const SUPABASE_URL = process.env.SUPABASE_URL || '';
-const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || '';
-
 interface DB {
   users: User[];
   wallets: Wallet[];
@@ -37,7 +32,6 @@ export const INITIAL_DB: DB = {
     }
   ],
   wallets: [
-    /* Fix: Using correct property names from Wallet interface: balance, donatableGold, donatableSilver, donatableBronze */
     { userId: 'admin-uuid', balance: 0, donatableGold: 0, donatableSilver: 0, donatableBronze: 0 }
   ],
   transactions: [],
@@ -56,7 +50,6 @@ export const INITIAL_DB: DB = {
   }
 };
 
-// Funções auxiliares para persistência
 export const getDB = (): DB => {
   const data = localStorage.getItem('tampinhas_digital_v1');
   if (!data) return INITIAL_DB;

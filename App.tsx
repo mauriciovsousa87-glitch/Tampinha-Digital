@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { 
   User, UserStatus, Role, Capability, Wallet, Transaction, 
   RewardItem, Order, OrderStatus, TransactionType 
@@ -20,9 +20,18 @@ import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import Toast, { ToastType } from './components/Toast';
 
-const supabaseUrl = 'https://ghgyiscnzcwokillnlox.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdoZ3lpc2NuemN3b2tpbGxubG94Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUzNzgyMjYsImV4cCI6MjA4MDk1NDIyNn0.1qzhIJ7A0pfxl8cuHTqFnCAZ7cMIICfhuYKlfhkhchU';
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Variáveis de ambiente injetadas pelo Vite
+const supabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_ANON_KEY || '';
+
+// Inicialização segura: só cria o cliente se houver URL e KEY
+export const supabase: SupabaseClient | null = (supabaseUrl && supabaseKey) 
+  ? createClient(supabaseUrl, supabaseKey) 
+  : null;
+
+if (!supabase) {
+  console.warn("Ambiente Local/Preview: Supabase não inicializado (chaves ausentes). O sistema usará LocalStorage.");
+}
 
 const App: React.FC = () => {
   const [db, setDb] = useState(INITIAL_DB);
@@ -37,6 +46,7 @@ const App: React.FC = () => {
 
   const syncWithCloud = useCallback(async (data: any) => {
     saveDB(data);
+    if (!supabase) return; // Pula sincronização se não houver cliente
     try {
       await supabase
         .from('app_state')
@@ -46,13 +56,21 @@ const App: React.FC = () => {
           updated_at: new Date().toISOString() 
         }, { onConflict: 'id' });
     } catch (err) {
-      console.error('Falha na sincronização:', err);
+      console.error('Falha na sincronização cloud:', err);
     }
   }, []);
 
   useEffect(() => {
     const initData = async () => {
       setIsLoading(true);
+      
+      // Se não houver supabase (ambiente local), carrega do LocalStorage
+      if (!supabase) {
+        setDb(getDB());
+        setIsLoading(false);
+        return;
+      }
+
       try {
         const { data, error } = await supabase
           .from('app_state')
@@ -98,8 +116,8 @@ const App: React.FC = () => {
   }, [isLoading, db.users, view]);
 
   const handleLogin = (u: User) => {
-    if (u.status === UserStatus.PENDING) return showToast('Cadastro pendente.', 'warning');
-    if (u.status === UserStatus.BLOCKED) return showToast('Conta bloqueada.', 'error');
+    if (u.status === UserStatus.PENDING) return showToast('Cadastro pendente de aprovação.', 'warning');
+    if (u.status === UserStatus.BLOCKED) return showToast('Sua conta está bloqueada.', 'error');
     setUser(u);
     localStorage.setItem('current_user_id', u.id);
     setView('DASHBOARD');
@@ -126,12 +144,12 @@ const App: React.FC = () => {
   if (isLoading) return (
     <div className="min-h-screen bg-black flex flex-col items-center justify-center">
       <div className="tampinha-container mb-8 scale-75">
-        <div className="tampinha-serrilha animate-spin-slow"></div>
+        <div className="tampinha-serrilha"></div>
         <div className="tampinha-fundo-preto">
           <span className="text-yellow-500 font-black italic text-xl">S</span>
         </div>
       </div>
-      <p className="text-yellow-500 font-black uppercase tracking-widest text-[10px] animate-pulse italic">Sincronizando Nuvem...</p>
+      <p className="text-yellow-500 font-black uppercase tracking-widest text-[10px] animate-pulse italic">Carregando Supply Digital...</p>
     </div>
   );
 
