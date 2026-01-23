@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supply - Tampinhas Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+      body { 
+        font-family: 'Inter', sans-serif; 
+        background-color: #000000;
+      }
+      
+      .tampinha-container {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .tampinha-serrilha {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #eab308;
+        clip-path: polygon(
+          50% 0%, 55% 2%, 60% 0%, 65% 5%, 72% 3%, 76% 9%, 84% 9%, 87% 16%, 93% 19%, 93% 27%, 99% 32%, 97% 40%, 100% 50%, 97% 60%, 99% 68%, 93% 73%, 93% 81%, 87% 84%, 84% 91%, 76% 91%, 72% 97%, 65% 95%, 60% 100%, 55% 98%, 50% 100%, 45% 98%, 40% 100%, 35% 95%, 28% 97%, 24% 91%, 16% 91%, 13% 84%, 7% 81%, 7% 73%, 1% 68%, 3% 60%, 0% 50%, 3% 40%, 1% 32%, 7% 27%, 7% 19%, 13% 16%, 16% 9%, 24% 9%, 28% 3%, 35% 5%, 40% 0%, 45% 2%
+        );
+        animation: pulse-glow 2s infinite alternate;
+      }
+
+      .tampinha-fundo-preto {
+        position: absolute;
+        width: 90%;
+        height: 90%;
+        background: #000000;
+        border-radius: 50%;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid rgba(234, 179, 8, 0.5);
+      }
+
+      @keyframes pulse-glow {
+        from { filter: drop-shadow(0 0 5px rgba(234, 179, 8, 0.4)); }
+        to { filter: drop-shadow(0 0 20px rgba(234, 179, 8, 0.8)); }
+      }
+
+      .logo-line {
+        width: 100px;
+        height: 2px;
+        background-color: #ffffff;
+        margin: 6px 0;
+        opacity: 0.9;
+      }
+
+      .text-supply {
+        color: #eab308;
+        font-weight: 900;
+        font-style: italic;
+        font-size: 32px;
+        line-height: 0.9;
+        letter-spacing: -0.05em;
+        text-transform: uppercase;
+      }
+
+      .text-nada-nos-para {
+        color: #ffffff;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 1;
+        text-transform: none;
+        letter-spacing: 0.02em;
+        font-style: italic;
+      }
+
+      ::-webkit-scrollbar { width: 8px; }
+      ::-webkit-scrollbar-track { background: #000; }
+      ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+      ::-webkit-scrollbar-thumb:hover { background: #eab308; }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@2.39.7"
+  }
+}
+</script>
+</head>
+<body class="bg-black text-slate-100">
+    <div id="root"></div>
+</body>
+</html>
