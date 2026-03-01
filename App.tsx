@@ -142,19 +142,19 @@ const App: React.FC = () => {
   }, [user, db.wallets]);
 
   if (isLoading) return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center">
       <div className="tampinha-container mb-8 scale-75">
         <div className="tampinha-serrilha"></div>
         <div className="tampinha-fundo-preto">
           <span className="text-yellow-500 font-black italic text-xl">S</span>
         </div>
       </div>
-      <p className="text-yellow-500 font-black uppercase tracking-widest text-[10px] animate-pulse italic">Carregando Supply Digital...</p>
+      <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px] animate-pulse italic">Carregando Supply Digital...</p>
     </div>
   );
 
   return (
-    <div className="flex min-h-screen bg-black">
+    <div className="flex min-h-screen bg-slate-50">
       {view !== 'LOGIN' && view !== 'REGISTER' && (
         <Sidebar currentView={view} setView={setView} capabilities={user?.capabilities || []} />
       )}
@@ -162,7 +162,7 @@ const App: React.FC = () => {
         {view !== 'LOGIN' && view !== 'REGISTER' && (
           <Topbar user={user} wallet={userWallet} onLogout={handleLogout} />
         )}
-        <main className="flex-1 p-4 md:p-8 overflow-y-auto bg-black">
+        <main className="flex-1 p-4 md:p-8 overflow-y-auto bg-slate-50">
           <div className="max-w-7xl mx-auto">
             {view === 'LOGIN' && <Login onLogin={handleLogin} onGoToRegister={() => setView('REGISTER')} db={db} onRefreshDB={refreshDB} showToast={showToast} />}
             {view === 'REGISTER' && <Register onGoToLogin={() => setView('LOGIN')} db={db} onRefreshDB={refreshDB} showToast={showToast} />}

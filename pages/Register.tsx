@@ -59,55 +59,55 @@ const Register: React.FC<RegisterProps> = ({ onGoToLogin, db, onRefreshDB, showT
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4 relative overflow-hidden">
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-yellow-500/5 blur-[120px] rounded-full"></div>
 
-      <div className="w-full max-w-md bg-zinc-900/40 backdrop-blur-xl border border-zinc-800 rounded-[3rem] shadow-2xl overflow-hidden p-10 animate-in fade-in zoom-in duration-500 relative z-10">
+      <div className="w-full max-w-md bg-white border border-zinc-200 rounded-[3rem] shadow-2xl overflow-hidden p-10 animate-in fade-in zoom-in duration-500 relative z-10">
         <div className="text-center mb-10 flex flex-col items-center">
-          <div className="w-16 h-16 rounded-full border border-yellow-500 flex flex-col items-center justify-center bg-black mb-4">
+          <div className="w-16 h-16 rounded-full border border-yellow-500 flex flex-col items-center justify-center bg-white mb-4 shadow-sm">
             <span className="text-yellow-500 font-black italic text-[9px] leading-none">SUPPLY</span>
-            <div className="w-6 h-[1px] bg-white my-0.5 opacity-50"></div>
+            <div className="w-6 h-[1px] bg-zinc-200 my-0.5"></div>
           </div>
-          <h2 className="text-2xl font-black text-white italic uppercase tracking-tighter">Criar nova conta</h2>
-          <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest mt-1">Preencha seus dados para começar.</p>
+          <h2 className="text-2xl font-black text-zinc-900 italic uppercase tracking-tighter">Criar nova conta</h2>
+          <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest mt-1">Preencha seus dados para começar.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
-            <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Nome Completo</label>
+            <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Nome Completo</label>
             <input 
               type="text" required
-              className="w-full px-5 py-3.5 bg-black border border-zinc-800 text-white rounded-2xl focus:outline-none focus:border-yellow-500 transition-all font-bold"
+              className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 text-zinc-900 rounded-2xl focus:outline-none focus:border-yellow-500 transition-all font-bold"
               placeholder="Digite seu nome"
               value={formData.name}
               onChange={e => setFormData({...formData, name: e.target.value})}
             />
           </div>
           <div className="space-y-1">
-            <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">ID Corporativo</label>
+            <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">ID Corporativo</label>
             <input 
               type="text" required
-              className="w-full px-5 py-3.5 bg-black border border-zinc-800 text-white rounded-2xl focus:outline-none focus:border-yellow-500 transition-all font-bold"
+              className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 text-zinc-900 rounded-2xl focus:outline-none focus:border-yellow-500 transition-all font-bold"
               placeholder="Ex: 99768009"
               value={formData.corporateId}
               onChange={e => setFormData({...formData, corporateId: e.target.value})}
             />
           </div>
           <div className="space-y-1">
-            <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Senha</label>
+            <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Senha</label>
             <input 
               type="password" required
-              className="w-full px-5 py-3.5 bg-black border border-zinc-800 text-white rounded-2xl focus:outline-none focus:border-yellow-500 transition-all font-bold"
+              className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 text-zinc-900 rounded-2xl focus:outline-none focus:border-yellow-500 transition-all font-bold"
               placeholder="••••"
               value={formData.password}
               onChange={e => setFormData({...formData, password: e.target.value})}
             />
           </div>
           <div className="space-y-1">
-            <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Confirmar Senha</label>
+            <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Confirmar Senha</label>
             <input 
               type="password" required
-              className="w-full px-5 py-3.5 bg-black border border-zinc-800 text-white rounded-2xl focus:outline-none focus:border-yellow-500 transition-all font-bold"
+              className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 text-zinc-900 rounded-2xl focus:outline-none focus:border-yellow-500 transition-all font-bold"
               placeholder="••••"
               value={formData.confirmPassword}
               onChange={e => setFormData({...formData, confirmPassword: e.target.value})}
@@ -124,7 +124,7 @@ const Register: React.FC<RegisterProps> = ({ onGoToLogin, db, onRefreshDB, showT
 
         <button 
           onClick={onGoToLogin}
-          className="w-full mt-6 text-zinc-500 font-bold text-xs uppercase tracking-widest hover:text-white transition-colors"
+          className="w-full mt-6 text-zinc-400 font-bold text-xs uppercase tracking-widest hover:text-zinc-900 transition-colors"
         >
           Voltar para o Login
         </button>

@@ -61,6 +61,8 @@ const Leadership: React.FC<LeadershipProps> = ({ user, db, onRefreshDB, showToas
 
       // 1. Debita da VERBA do doador
       const donorWallet = currentDb.wallets.find((w: any) => w.userId === user.id);
+      if (!donorWallet) throw new Error('Carteira não encontrada');
+      
       if (coinConfig.type === CoinType.GOLD) donorWallet.donatableGold -= numCoins;
       if (coinConfig.type === CoinType.SILVER) donorWallet.donatableSilver -= numCoins;
       if (coinConfig.type === CoinType.BRONZE) donorWallet.donatableBronze -= numCoins;
@@ -105,24 +107,24 @@ const Leadership: React.FC<LeadershipProps> = ({ user, db, onRefreshDB, showToas
       <header className="flex justify-between items-end">
         <div>
           <p className={`font-black text-[10px] uppercase tracking-[0.3em] mb-1 italic ${coinConfig.color}`}>Sua Verba Disponível: {coinConfig.stock} {coinConfig.label}s</p>
-          <h1 className="text-4xl font-black text-white italic uppercase tracking-tighter">Enviar Reconhecimento</h1>
+          <h1 className="text-4xl font-black text-zinc-900 italic uppercase tracking-tighter">Enviar Reconhecimento</h1>
         </div>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
-          <form onSubmit={handleSubmit} className="bg-zinc-900/40 p-8 rounded-[2.5rem] border border-zinc-800 space-y-6 shadow-2xl relative">
+          <form onSubmit={handleSubmit} className="bg-white p-8 rounded-[2.5rem] border border-zinc-200 space-y-6 shadow-sm relative">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Colaborador</label>
-                <select required className="w-full p-4 bg-black border border-zinc-800 text-white rounded-2xl appearance-none outline-none font-bold" value={recipientId} onChange={e => setRecipientId(e.target.value)}>
+                <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Colaborador</label>
+                <select required className="w-full p-4 bg-zinc-50 border border-zinc-100 text-zinc-900 rounded-2xl appearance-none outline-none font-bold" value={recipientId} onChange={e => setRecipientId(e.target.value)}>
                   <option value="">Selecione...</option>
                   {activeUsers.map((u: User) => (<option key={u.id} value={u.id}>{u.name.toUpperCase()}</option>))}
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Pilar do Reconhecimento</label>
-                <select required className="w-full p-4 bg-black border border-zinc-800 text-white rounded-2xl appearance-none outline-none font-bold" value={pillar} onChange={e => setPillar(e.target.value as PilarType)}>
+                <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Pilar do Reconhecimento</label>
+                <select required className="w-full p-4 bg-zinc-50 border border-zinc-100 text-zinc-900 rounded-2xl appearance-none outline-none font-bold" value={pillar} onChange={e => setPillar(e.target.value as PilarType)}>
                   <option value="">Selecione o Pilar...</option>
                   {PILARES.map(p => (<option key={p} value={p}>{p}</option>))}
                 </select>
@@ -131,27 +133,27 @@ const Leadership: React.FC<LeadershipProps> = ({ user, db, onRefreshDB, showToas
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Qtd de Moedas</label>
-                <input type="number" required min="1" max={coinConfig.stock} className={`w-full p-4 bg-black border border-zinc-800 font-black rounded-2xl text-2xl outline-none ${coinConfig.color}`} value={amount} onChange={e => setAmount(e.target.value)} />
+                <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Qtd de Moedas</label>
+                <input type="number" required min="1" max={coinConfig.stock} className={`w-full p-4 bg-zinc-50 border border-zinc-100 font-black rounded-2xl text-2xl outline-none ${coinConfig.color}`} value={amount} onChange={e => setAmount(e.target.value)} />
               </div>
-              <div className="flex flex-col justify-center p-4 bg-black/40 rounded-2xl border border-zinc-800">
-                 <p className="text-[10px] font-black text-zinc-500 uppercase">Impacto na Loja:</p>
-                 <p className="text-3xl font-black text-white italic tracking-tighter">+{Number(amount) * coinConfig.weight} Pts</p>
+              <div className="flex flex-col justify-center p-4 bg-zinc-50 rounded-2xl border border-zinc-100">
+                 <p className="text-[10px] font-black text-zinc-400 uppercase">Impacto na Loja:</p>
+                 <p className="text-3xl font-black text-zinc-900 italic tracking-tighter">+{Number(amount) * coinConfig.weight} Pts</p>
               </div>
             </div>
             <div className="space-y-2">
-              <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Motivo</label>
-              <textarea required rows={4} className="w-full p-4 bg-black border border-zinc-800 text-white rounded-2xl outline-none" placeholder="Por que este colaborador merece?" value={reason} onChange={e => setReason(e.target.value)}></textarea>
+              <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Motivo</label>
+              <textarea required rows={4} className="w-full p-4 bg-zinc-50 border border-zinc-100 text-zinc-900 rounded-2xl outline-none placeholder:text-zinc-300" placeholder="Por que este colaborador merece?" value={reason} onChange={e => setReason(e.target.value)}></textarea>
             </div>
-            <button type="submit" disabled={isSubmitting || coinConfig.stock === 0} className={`w-full py-5 rounded-2xl font-black text-lg uppercase tracking-widest transition-all ${isSubmitting || coinConfig.stock === 0 ? 'bg-zinc-800 text-zinc-500' : 'bg-yellow-500 text-black hover:bg-yellow-400'}`}>
+            <button type="submit" disabled={isSubmitting || coinConfig.stock === 0} className={`w-full py-5 rounded-2xl font-black text-lg uppercase tracking-widest transition-all shadow-lg ${isSubmitting || coinConfig.stock === 0 ? 'bg-zinc-100 text-zinc-300 cursor-not-allowed border border-zinc-200' : 'bg-yellow-500 text-black hover:bg-yellow-400 shadow-yellow-500/20'}`}>
               {coinConfig.stock === 0 ? 'SEM VERBA DISPONÍVEL' : 'CONFIRMAR RECONHECIMENTO'}
             </button>
           </form>
         </div>
         <div className="lg:col-span-2 space-y-4">
-           <div className="p-8 rounded-[2.5rem] bg-zinc-900 border border-zinc-800">
-              <h4 className="font-black text-white uppercase italic text-xl mb-4 tracking-tighter">Como funciona?</h4>
-              <p className="text-xs text-zinc-400 font-medium leading-relaxed">
+           <div className="p-8 rounded-[2.5rem] bg-white border border-zinc-200 shadow-sm">
+              <h4 className="font-black text-zinc-900 uppercase italic text-xl mb-4 tracking-tighter">Como funciona?</h4>
+              <p className="text-xs text-zinc-500 font-medium leading-relaxed">
                 Você recebeu esta verba do administrador. Quando você doa moedas, elas são convertidas em <strong>Pontos de Compra</strong> para o colaborador, permitindo que ele resgate brindes na loja.
                 <br/><br/>
                 O reconhecimento deve estar associado a um dos <strong>8 Pilares Estratégicos</strong> da nossa unidade.

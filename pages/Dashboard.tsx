@@ -82,15 +82,15 @@ const Dashboard: React.FC<DashboardProps> = ({ user, db, setView }) => {
         <div className="flex items-center gap-6">
           <div className="relative w-24 h-24 flex items-center justify-center">
             <div className="absolute inset-0 bg-yellow-500" style={{ clipPath: 'polygon(50% 0%, 55% 2%, 60% 0%, 65% 5%, 72% 3%, 76% 9%, 84% 9%, 87% 16%, 93% 19%, 93% 27%, 99% 32%, 97% 40%, 100% 50%, 97% 60%, 99% 68%, 93% 73%, 93% 81%, 87% 84%, 84% 91%, 76% 91%, 72% 97%, 65% 95%, 60% 100%, 55% 98%, 50% 100%, 45% 98%, 40% 100%, 35% 95%, 28% 97%, 24% 91%, 16% 91%, 13% 84%, 7% 81%, 7% 73%, 1% 68%, 3% 60%, 0% 50%, 3% 40%, 1% 32%, 7% 27%, 7% 19%, 13% 16%, 16% 9%, 24% 9%, 28% 3%, 35% 5%, 40% 0%, 45% 2%)' }}></div>
-            <div className="absolute w-[88%] h-[88%] bg-black rounded-full z-10 flex flex-col items-center justify-center">
+            <div className="absolute w-[88%] h-[88%] bg-white rounded-full z-10 flex flex-col items-center justify-center shadow-sm">
               <span className="text-yellow-500 font-black italic text-[14px] leading-none">SUPPLY</span>
-              <div className="w-10 h-[1px] bg-white my-1"></div>
-              <span className="text-white font-bold text-[6px] uppercase whitespace-nowrap">Nada nos para!</span>
+              <div className="w-10 h-[1px] bg-zinc-200 my-1"></div>
+              <span className="text-zinc-400 font-bold text-[6px] uppercase whitespace-nowrap">Nada nos para!</span>
             </div>
           </div>
           <div>
-            <p className="text-white font-black uppercase tracking-[0.3em] text-[10px] mb-1 opacity-50 italic">Nada nos para!</p>
-            <h1 className="text-4xl font-black text-white italic uppercase tracking-tighter">Fala, {user.name.split(' ')[0]}!</h1>
+            <p className="text-zinc-400 font-black uppercase tracking-[0.3em] text-[10px] mb-1 opacity-50 italic">Nada nos para!</p>
+            <h1 className="text-4xl font-black text-zinc-900 italic uppercase tracking-tighter">Fala, {user.name.split(' ')[0]}!</h1>
           </div>
         </div>
       </header>
@@ -111,16 +111,16 @@ const Dashboard: React.FC<DashboardProps> = ({ user, db, setView }) => {
         </div>
 
         {isLeader && (
-          <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-[3rem] flex flex-col justify-center relative group overflow-hidden">
+          <div className="bg-white border border-zinc-200 p-8 rounded-[3rem] shadow-sm flex flex-col justify-center relative group overflow-hidden">
              <div className="absolute top-0 right-0 p-4 opacity-5 text-6xl group-hover:scale-110 transition-transform">
-                <i className="fa-solid fa-hand-holding-dollar text-white"></i>
+                <i className="fa-solid fa-hand-holding-dollar text-zinc-900"></i>
              </div>
-             <p className="text-zinc-500 font-black uppercase tracking-widest text-[10px] mb-2">Verba para Doação</p>
+             <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px] mb-2">Verba para Doação</p>
              <div className="flex items-center gap-4">
                 <span className="text-4xl font-black text-emerald-500 italic tracking-tighter">{totalDonatablePoints}</span>
                 <div className="flex flex-col">
-                  <span className="text-[8px] font-black text-zinc-600 uppercase">Pontos p/</span>
-                  <span className="text-[8px] font-black text-zinc-600 uppercase leading-none">Distribuir</span>
+                  <span className="text-[8px] font-black text-zinc-400 uppercase">Pontos p/</span>
+                  <span className="text-[8px] font-black text-zinc-400 uppercase leading-none">Distribuir</span>
                 </div>
              </div>
              <button onClick={() => setView('LEADERSHIP')} className="mt-4 text-emerald-500 font-black uppercase text-[9px] tracking-widest flex items-center gap-2 hover:gap-3 transition-all">
@@ -129,18 +129,18 @@ const Dashboard: React.FC<DashboardProps> = ({ user, db, setView }) => {
           </div>
         )}
 
-        <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-[3rem] flex flex-col justify-center">
-          <p className="text-zinc-500 font-black uppercase tracking-widest text-[10px] mb-2">Pedidos Pendentes</p>
+        <div className="bg-white border border-zinc-200 p-8 rounded-[3rem] shadow-sm flex flex-col justify-center">
+          <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px] mb-2">Pedidos Pendentes</p>
           <div className="flex items-center gap-4">
-            <span className="text-4xl font-black text-white italic">{pendingOrders}</span>
-            <div className="px-3 py-1 bg-yellow-500/10 text-yellow-500 rounded-lg text-[9px] font-black uppercase tracking-wider border border-yellow-500/20">Status</div>
+            <span className="text-4xl font-black text-zinc-900 italic">{pendingOrders}</span>
+            <div className="px-3 py-1 bg-yellow-50 text-yellow-600 rounded-lg text-[9px] font-black uppercase tracking-wider border border-yellow-200">Status</div>
           </div>
         </div>
 
-        <div className="bg-zinc-900 border border-zinc-800 p-8 rounded-[3rem] flex flex-col justify-center">
-          <p className="text-zinc-500 font-black uppercase tracking-widest text-[10px] mb-2">Total de Moedas</p>
+        <div className="bg-white border border-zinc-200 p-8 rounded-[3rem] shadow-sm flex flex-col justify-center">
+          <p className="text-zinc-400 font-black uppercase tracking-widest text-[10px] mb-2">Total de Moedas</p>
           <div className="flex items-center gap-4">
-            <span className="text-4xl font-black text-white italic tracking-tighter">{totalMoedasRecebidas}</span>
+            <span className="text-4xl font-black text-zinc-900 italic tracking-tighter">{totalMoedasRecebidas}</span>
             <div className="w-8 h-8 rounded-full border border-yellow-500/30 flex items-center justify-center">
               <i className="fa-solid fa-crown text-yellow-500 text-sm"></i>
             </div>
@@ -150,51 +150,51 @@ const Dashboard: React.FC<DashboardProps> = ({ user, db, setView }) => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <section className="lg:col-span-2 space-y-4">
-          <h3 className="text-xs font-black text-white uppercase tracking-[0.3em] italic px-2">Timeline de Atividades</h3>
-          <div className="bg-zinc-900 rounded-[3rem] border border-zinc-800 overflow-hidden">
+          <h3 className="text-xs font-black text-zinc-400 uppercase tracking-[0.3em] italic px-2">Timeline de Atividades</h3>
+          <div className="bg-white rounded-[3rem] border border-zinc-200 overflow-hidden shadow-sm">
             <table className="w-full">
-              <tbody className="divide-y divide-zinc-800">
+              <tbody className="divide-y divide-zinc-100">
                 {userTransactions.length > 0 ? userTransactions.map((t: Transaction) => (
-                  <tr key={t.id} className="hover:bg-black/40 transition-colors">
+                  <tr key={t.id} className="hover:bg-zinc-50 transition-colors">
                     <td className="px-8 py-6">
-                      <div className={`w-10 h-10 rounded-full border flex items-center justify-center ${t.isDonationVerba ? 'border-emerald-500/30 bg-emerald-500/5 text-emerald-500' : t.type === TransactionType.CREDIT ? 'border-yellow-500/30 bg-yellow-500/5 text-yellow-500' : 'border-zinc-700 bg-zinc-800 text-zinc-500'}`}>
+                      <div className={`w-10 h-10 rounded-full border flex items-center justify-center ${t.isDonationVerba ? 'border-emerald-500/30 bg-emerald-500/5 text-emerald-500' : t.type === TransactionType.CREDIT ? 'border-yellow-500/30 bg-yellow-500/5 text-yellow-500' : 'border-zinc-200 bg-zinc-50 text-zinc-400'}`}>
                         <i className={`fa-solid ${t.isDonationVerba ? 'fa-bolt' : t.type === TransactionType.CREDIT ? 'fa-plus' : 'fa-minus'} text-xs`}></i>
                       </div>
                     </td>
                     <td className="px-6 py-6">
-                      <p className="text-xs font-black text-white uppercase tracking-tight leading-none mb-1">{t.reason}</p>
-                      <p className="text-[9px] text-zinc-500 font-black uppercase tracking-widest">{t.category}</p>
+                      <p className="text-xs font-black text-zinc-900 uppercase tracking-tight leading-none mb-1">{t.reason}</p>
+                      <p className="text-[9px] text-zinc-400 font-black uppercase tracking-widest">{t.category}</p>
                     </td>
                     <td className="px-8 py-6 text-right">
-                      <p className={`text-xl font-black italic tracking-tighter ${t.isDonationVerba ? 'text-emerald-500' : t.type === TransactionType.CREDIT ? 'text-yellow-500' : 'text-zinc-500'}`}>
+                      <p className={`text-xl font-black italic tracking-tighter ${t.isDonationVerba ? 'text-emerald-500' : t.type === TransactionType.CREDIT ? 'text-yellow-500' : 'text-zinc-400'}`}>
                         {t.type === TransactionType.CREDIT ? '+' : '-'}{t.amount || 0}
                       </p>
-                      <p className="text-[9px] text-zinc-600 font-bold">{new Date(t.createdAt).toLocaleDateString()}</p>
+                      <p className="text-[9px] text-zinc-300 font-bold">{new Date(t.createdAt).toLocaleDateString()}</p>
                     </td>
                   </tr>
-                )) : (<tr><td className="p-12 text-center text-zinc-600 font-black uppercase text-[10px] tracking-widest italic">Sem atividades.</td></tr>)}
+                )) : (<tr><td className="p-12 text-center text-zinc-300 font-black uppercase text-[10px] tracking-widest italic">Sem atividades.</td></tr>)}
               </tbody>
             </table>
           </div>
         </section>
 
         <section className="space-y-4">
-          <h3 className="text-xs font-black text-white uppercase tracking-[0.3em] italic px-2">Seu Desempenho por Pilar</h3>
-          <div className="bg-zinc-900/60 border border-zinc-800 rounded-[3rem] p-6 overflow-hidden">
+          <h3 className="text-xs font-black text-zinc-400 uppercase tracking-[0.3em] italic px-2">Seu Desempenho por Pilar</h3>
+          <div className="bg-white border border-zinc-200 rounded-[3rem] p-6 overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
-                  <tr className="border-b border-zinc-800">
-                    <th className="py-3 text-[9px] font-black text-zinc-600 uppercase tracking-widest">Pilar</th>
+                  <tr className="border-b border-zinc-100">
+                    <th className="py-3 text-[9px] font-black text-zinc-300 uppercase tracking-widest">Pilar</th>
                     <th className="py-3 px-2 text-center text-orange-600"><i className="fa-solid fa-circle-dot"></i></th>
                     <th className="py-3 px-2 text-center text-zinc-400"><i className="fa-solid fa-circle-dot"></i></th>
                     <th className="py-3 px-2 text-center text-yellow-500"><i className="fa-solid fa-circle-dot"></i></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-zinc-800/50">
+                <tbody className="divide-y divide-zinc-50">
                   {PILARES.map(p => (
-                    <tr key={p} className="hover:bg-white/[0.02] transition-colors">
-                      <td className="py-3 text-[10px] font-black text-white uppercase italic">{p}</td>
+                    <tr key={p} className="hover:bg-zinc-50 transition-colors">
+                      <td className="py-3 text-[10px] font-black text-zinc-800 uppercase italic">{p}</td>
                       <td className="py-3 px-2 text-center text-xs font-black text-orange-600/60">{pilarStats[p][CoinType.BRONZE] || '-'}</td>
                       <td className="py-3 px-2 text-center text-xs font-black text-zinc-400/60">{pilarStats[p][CoinType.SILVER] || '-'}</td>
                       <td className="py-3 px-2 text-center text-xs font-black text-yellow-500">{pilarStats[p][CoinType.GOLD] || '-'}</td>
@@ -203,9 +203,9 @@ const Dashboard: React.FC<DashboardProps> = ({ user, db, setView }) => {
                 </tbody>
               </table>
             </div>
-            <div className="mt-6 pt-4 border-t border-zinc-800 flex justify-between items-center px-2">
-               <span className="text-[10px] font-black text-zinc-500 uppercase tracking-widest italic">Total de Moedas:</span>
-               <span className="text-2xl font-black text-white italic tracking-tighter">{totalMoedasRecebidas}</span>
+            <div className="mt-6 pt-4 border-t border-zinc-100 flex justify-between items-center px-2">
+               <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest italic">Total de Moedas:</span>
+               <span className="text-2xl font-black text-zinc-900 italic tracking-tighter">{totalMoedasRecebidas}</span>
             </div>
           </div>
         </section>

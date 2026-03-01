@@ -27,10 +27,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoToRegister, db, onRefreshDB,
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black p-4 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4 relative overflow-hidden">
       <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-yellow-500/5 blur-[120px] rounded-full"></div>
       
-      <div className="w-full max-w-md bg-zinc-900/40 backdrop-blur-xl border border-zinc-800 rounded-[3rem] shadow-2xl overflow-hidden p-10 animate-in fade-in zoom-in duration-500 relative z-10">
+      <div className="w-full max-w-md bg-white border border-zinc-200 rounded-[3rem] shadow-2xl overflow-hidden p-10 animate-in fade-in zoom-in duration-500 relative z-10">
         <div className="text-center mb-12 flex flex-col items-center">
           <div className="tampinha-container mb-8">
             <div className="tampinha-serrilha"></div>
@@ -40,18 +40,18 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoToRegister, db, onRefreshDB,
               <span className="text-nada-nos-para">Nada nos para!</span>
             </div>
           </div>
-          <h1 className="text-2xl font-black text-white italic tracking-tighter uppercase mb-1">Tampinha Digital</h1>
+          <h1 className="text-2xl font-black text-zinc-900 italic tracking-tighter uppercase mb-1">Tampinha Digital</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">ID Corporativo</label>
+            <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">ID Corporativo</label>
             <div className="relative">
-              <i className="fa-solid fa-user absolute left-5 top-4 text-zinc-600"></i>
+              <i className="fa-solid fa-user absolute left-5 top-4 text-zinc-300"></i>
               <input 
                 type="text" 
                 required
-                className="w-full pl-14 pr-6 py-4 bg-black border border-zinc-800 text-white rounded-2xl focus:outline-none focus:border-yellow-500 transition-all placeholder:text-zinc-800 font-bold"
+                className="w-full pl-14 pr-6 py-4 bg-zinc-50 border border-zinc-200 text-zinc-900 rounded-2xl focus:outline-none focus:border-yellow-500 transition-all placeholder:text-zinc-300 font-bold"
                 placeholder="ID de Colaborador"
                 value={corporateId}
                 onChange={e => setCorporateId(e.target.value)}
@@ -60,13 +60,13 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoToRegister, db, onRefreshDB,
           </div>
 
           <div className="space-y-2">
-            <label className="block text-[10px] font-black text-zinc-500 uppercase tracking-widest ml-1">Senha</label>
+            <label className="block text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">Senha</label>
             <div className="relative">
-              <i className="fa-solid fa-lock absolute left-5 top-4 text-zinc-600"></i>
+              <i className="fa-solid fa-lock absolute left-5 top-4 text-zinc-300"></i>
               <input 
                 type="password" 
                 required
-                className="w-full pl-14 pr-6 py-4 bg-black border border-zinc-800 text-white rounded-2xl focus:outline-none focus:border-yellow-500 transition-all placeholder:text-zinc-800 font-bold"
+                className="w-full pl-14 pr-6 py-4 bg-zinc-50 border border-zinc-200 text-zinc-900 rounded-2xl focus:outline-none focus:border-yellow-500 transition-all placeholder:text-zinc-300 font-bold"
                 placeholder="••••"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
@@ -82,12 +82,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onGoToRegister, db, onRefreshDB,
           </button>
         </form>
 
-        <div className="mt-10 pt-8 border-t border-zinc-800 text-center">
-          <p className="text-zinc-500 text-sm font-medium">
+        <div className="mt-10 pt-8 border-t border-zinc-100 text-center">
+          <p className="text-zinc-400 text-sm font-medium">
             Primeiro acesso?{' '}
             <button 
               onClick={onGoToRegister}
-              className="text-white font-black hover:text-yellow-500 transition-colors"
+              className="text-zinc-900 font-black hover:text-yellow-500 transition-colors"
             >
               Crie sua conta
             </button>
