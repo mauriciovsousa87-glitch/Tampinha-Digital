@@ -3,7 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { User, UserStatus, Role, Capability, RewardItem, Wallet, CoinType, TransactionType, Transaction } from '../types';
 import { saveDB, addAuditLog, getDB } from '../store';
 import { ToastType } from '../components/Toast';
-import { supabase } from '../App';
+import { supabase } from '../src/lib/supabase';
 
 interface AdminProps {
   user: User;
