@@ -109,6 +109,25 @@ export interface OrderItem {
   costEach: number;
 }
 
+export enum ChallengeStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED'
+}
+
+export interface MonthlyChallenge {
+  id: string;
+  area: string;
+  kpi: string;
+  meta: string;
+  status: ChallengeStatus;
+  isMetaHit: boolean;
+  createdAt: string;
+  createdBy: string;
+  approvedBy?: string;
+  approvedAt?: string;
+}
+
 export interface AuditLog {
   id: string;
   actorUserId: string;

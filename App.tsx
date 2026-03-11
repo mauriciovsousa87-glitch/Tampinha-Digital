@@ -16,6 +16,7 @@ import MyOrders from './pages/MyOrders';
 import Leadership from './pages/Leadership';
 import Approvals from './pages/Approvals';
 import Admin from './pages/Admin';
+import MonthlyChallenge from './pages/MonthlyChallenge';
 import Sidebar from './components/Sidebar';
 import Topbar from './components/Topbar';
 import Toast, { ToastType } from './components/Toast';
@@ -24,7 +25,7 @@ const App: React.FC = () => {
   const [db, setDb] = useState(INITIAL_DB);
   const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-  const [view, setView] = useState<'LOGIN' | 'REGISTER' | 'DASHBOARD' | 'STORE' | 'MY_ORDERS' | 'LEADERSHIP' | 'APPROVALS' | 'ADMIN'>('LOGIN');
+  const [view, setView] = useState<'LOGIN' | 'REGISTER' | 'DASHBOARD' | 'STORE' | 'MY_ORDERS' | 'LEADERSHIP' | 'APPROVALS' | 'ADMIN' | 'MONTHLY_CHALLENGE'>('LOGIN');
   const [toast, setToast] = useState<{ message: string; type: ToastType } | null>(null);
 
   const showToast = useCallback((message: string, type: ToastType = 'info') => {
@@ -82,6 +83,8 @@ const App: React.FC = () => {
             transactions: data.content.transactions || INITIAL_DB.transactions,
             rewardItems: data.content.rewardItems || INITIAL_DB.rewardItems,
             orders: data.content.orders || INITIAL_DB.orders,
+            challenges: data.content.challenges || INITIAL_DB.challenges,
+            auditLogs: data.content.auditLogs || INITIAL_DB.auditLogs,
           };
           setDb(merged);
           saveDB(merged);
@@ -176,6 +179,7 @@ const App: React.FC = () => {
             {view === 'LEADERSHIP' && <Leadership user={user!} db={db} onRefreshDB={refreshDB} showToast={showToast} />}
             {view === 'APPROVALS' && <Approvals user={user!} db={db} onRefreshDB={refreshDB} showToast={showToast} />}
             {view === 'ADMIN' && <Admin user={user!} db={db} onRefreshDB={refreshDB} showToast={showToast} />}
+            {view === 'MONTHLY_CHALLENGE' && <MonthlyChallenge user={user!} db={db} onRefreshDB={refreshDB} showToast={showToast} />}
           </div>
         </main>
       </div>

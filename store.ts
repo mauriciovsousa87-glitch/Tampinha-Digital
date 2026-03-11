@@ -1,7 +1,7 @@
 
 import { 
   User, UserStatus, Role, Capability, Wallet, Transaction, TransactionType,
-  RewardItem, Order, OrderStatus, AuditLog 
+  RewardItem, Order, OrderStatus, AuditLog, MonthlyChallenge 
 } from './types';
 
 interface DB {
@@ -10,6 +10,7 @@ interface DB {
   transactions: Transaction[];
   rewardItems: RewardItem[];
   orders: Order[];
+  challenges: MonthlyChallenge[];
   auditLogs: AuditLog[];
   config: {
     currencyName: string;
@@ -42,6 +43,7 @@ export const INITIAL_DB: DB = {
     { id: '4', name: 'Garrafa Térmica', description: 'Garrafa 500ml inox térmica', imageUrl: 'https://images.unsplash.com/photo-1602143399364-793175df9576?auto=format&fit=crop&q=80&w=400', cost: 15, stock: 6, category: 'Acessórios', isActive: true }
   ],
   orders: [],
+  challenges: [],
   auditLogs: [],
   config: {
     currencyName: 'tampinhas',

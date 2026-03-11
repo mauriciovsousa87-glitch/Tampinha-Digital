@@ -28,6 +28,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, capabilities })
     { id: 'DASHBOARD', label: 'Início', icon: 'fa-house', visible: true },
     { id: 'STORE', label: 'Loja de Brindes', icon: 'fa-shop', visible: true },
     { id: 'MY_ORDERS', label: 'Meus Pedidos', icon: 'fa-list-check', visible: true },
+    { id: 'MONTHLY_CHALLENGE', label: 'Desafio Mensal', icon: 'fa-bullseye', visible: !capabilities.includes(Capability.OPERADOR) },
     { id: 'LEADERSHIP', label: 'Dar Moedas', icon: 'fa-hand-holding-heart', visible: isLider },
     { id: 'APPROVALS', label: 'Aprovações', icon: 'fa-stamp', visible: isAprovador },
     { id: 'ADMIN', label: 'Administração', icon: 'fa-gears', visible: isAdmin },

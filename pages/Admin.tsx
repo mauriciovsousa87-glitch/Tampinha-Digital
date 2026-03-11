@@ -1,5 +1,6 @@
 
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import * as XLSX from 'xlsx';
 import { User, UserStatus, Role, Capability, RewardItem, Wallet, CoinType, TransactionType, Transaction } from '../types';
 import { saveDB, addAuditLog, getDB } from '../store';
 import { ToastType } from '../components/Toast';
@@ -29,6 +30,8 @@ const Admin: React.FC<AdminProps> = ({ user, db, onRefreshDB, showToast }) => {
   const [editUserName, setEditUserName] = useState('');
   const [editUserId, setEditUserId] = useState('');
   const [editUserPassword, setEditUserPassword] = useState('');
+  const [isBulkUploading, setIsBulkUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Sincroniza o estoque do modal quando o item a editar muda
   useEffect(() => {
@@ -128,6 +131,86 @@ const Admin: React.FC<AdminProps> = ({ user, db, onRefreshDB, showToast }) => {
       showToast(`${editUserName} cadastrado com sucesso!`, 'success');
     }
     saveDB(currentDb); onRefreshDB(); setUserToEdit(null); setIsAddingUser(false);
+  };
+
+  const handleBulkUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsBulkUploading(true);
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      try {
+        const bstr = evt.target?.result;
+        const wb = XLSX.read(bstr, { type: 'binary' });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+        const data = XLSX.utils.sheet_to_json(ws, { header: 1 }) as any[][];
+
+        // Ignorar cabeçalho se existir (assumindo que a primeira linha pode ser cabeçalho se não for numérica ou se tiver nomes de colunas)
+        // Mas para ser seguro, vamos processar todas as linhas que tenham pelo menos 2 colunas (Nome e ID)
+        const currentDb = getDB();
+        let addedCount = 0;
+        let skippedCount = 0;
+
+        data.forEach((row, index) => {
+          if (index === 0 && (String(row[0]).toLowerCase().includes('nome') || String(row[1]).toLowerCase().includes('id'))) {
+            return; // Pula cabeçalho
+          }
+
+          const name = String(row[0] || '').trim();
+          const corporateId = String(row[1] || '').trim();
+          const password = String(row[2] || '123456').trim(); // Senha padrão se não houver
+
+          if (!name || !corporateId) {
+            if (name || corporateId) skippedCount++;
+            return;
+          }
+
+          const idExists = currentDb.users.some((u: User) => u.corporateId === corporateId);
+          if (idExists) {
+            skippedCount++;
+            return;
+          }
+
+          const newUser: User = {
+            id: Math.random().toString(36).substr(2, 9),
+            corporateId,
+            name,
+            passwordHash: password,
+            status: UserStatus.ACTIVE,
+            roles: [Role.USER],
+            capabilities: [Capability.OPERADOR],
+            createdAt: new Date().toISOString()
+          };
+
+          currentDb.users.push(newUser);
+          currentDb.wallets.push({ 
+            userId: newUser.id, 
+            balance: 0, 
+            donatableGold: 0, 
+            donatableSilver: 0, 
+            donatableBronze: 0 
+          });
+          addedCount++;
+        });
+
+        if (addedCount > 0) {
+          saveDB(currentDb);
+          onRefreshDB();
+          showToast(`${addedCount} colaboradores importados com sucesso!${skippedCount > 0 ? ` (${skippedCount} ignorados)` : ''}`, 'success');
+        } else {
+          showToast('Nenhum colaborador novo encontrado no arquivo.', 'warning');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Erro ao processar arquivo Excel.', 'error');
+      } finally {
+        setIsBulkUploading(false);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      }
+    };
+    reader.readAsBinaryString(file);
   };
 
   const handleAdjustVerba = (targetUser: User, newValue: number) => {
@@ -248,7 +331,23 @@ const Admin: React.FC<AdminProps> = ({ user, db, onRefreshDB, showToast }) => {
         <div className="bg-white border border-zinc-200 rounded-[3rem] overflow-hidden shadow-sm">
           <div className="p-8 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50">
             <h2 className="font-black italic uppercase tracking-tighter text-xl text-zinc-900">Lista de Colaboradores</h2>
-            <button onClick={() => setIsAddingUser(true)} className="bg-emerald-500 text-black px-6 py-2.5 rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-emerald-400 transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/10"><i className="fa-solid fa-user-plus"></i> Novo Colaborador</button>
+            <div className="flex gap-2">
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleBulkUpload} 
+                accept=".xlsx, .xls, .csv" 
+                className="hidden" 
+              />
+              <button 
+                onClick={() => fileInputRef.current?.click()} 
+                disabled={isBulkUploading}
+                className="bg-zinc-900 text-white px-6 py-2.5 rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-zinc-800 transition-all flex items-center gap-2 shadow-lg shadow-zinc-900/10"
+              >
+                <i className="fa-solid fa-file-import"></i> {isBulkUploading ? 'Importando...' : 'Carga em Massa'}
+              </button>
+              <button onClick={() => setIsAddingUser(true)} className="bg-emerald-500 text-black px-6 py-2.5 rounded-xl font-black text-[9px] uppercase tracking-widest hover:bg-emerald-400 transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/10"><i className="fa-solid fa-user-plus"></i> Novo Colaborador</button>
+            </div>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left">
@@ -325,10 +424,10 @@ const Admin: React.FC<AdminProps> = ({ user, db, onRefreshDB, showToast }) => {
                        <p className="text-[10px] font-black text-zinc-300 uppercase tracking-widest">Estoque</p>
                        <span className={`text-[10px] font-black italic ${item.stock < 5 ? 'text-rose-500' : 'text-emerald-500'}`}>{item.stock} UN</span>
                     </div>
-                    <div className="flex items-center bg-zinc-50 border border-zinc-100 rounded-2xl p-1 gap-1">
-                      <button onClick={() => handleUpdateItemStock(item.id, item.stock - 1)} className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-rose-500"><i className="fa-solid fa-minus"></i></button>
-                      <input type="number" className="flex-1 bg-transparent text-center text-xl font-black text-zinc-900 italic outline-none" value={item.stock} onChange={(e) => handleUpdateItemStock(item.id, parseInt(e.target.value) || 0)} />
-                      <button onClick={() => handleUpdateItemStock(item.id, item.stock + 1)} className="w-10 h-10 flex items-center justify-center text-emerald-500"><i className="fa-solid fa-plus"></i></button>
+                    <div className="flex items-center justify-between bg-zinc-50 border border-zinc-100 rounded-2xl p-1 gap-1 w-full">
+                      <button onClick={() => handleUpdateItemStock(item.id, item.stock - 1)} className="w-10 h-10 flex-shrink-0 flex items-center justify-center text-zinc-400 hover:text-rose-500 transition-colors"><i className="fa-solid fa-minus"></i></button>
+                      <input type="number" className="flex-1 min-w-0 bg-transparent text-center text-xl font-black text-zinc-900 italic outline-none" value={item.stock} onChange={(e) => handleUpdateItemStock(item.id, parseInt(e.target.value) || 0)} />
+                      <button onClick={() => handleUpdateItemStock(item.id, item.stock + 1)} className="w-10 h-10 flex-shrink-0 flex items-center justify-center text-emerald-500 hover:text-emerald-600 transition-colors"><i className="fa-solid fa-plus"></i></button>
                     </div>
                  </div>
               </div>
@@ -426,10 +525,10 @@ const Admin: React.FC<AdminProps> = ({ user, db, onRefreshDB, showToast }) => {
                 </div>
                 <div className="space-y-1">
                   <label className="text-[10px] font-black text-zinc-400 uppercase ml-1">Estoque</label>
-                  <div className="flex items-center bg-zinc-50 border border-zinc-100 rounded-2xl p-1 gap-1 h-[60px]">
-                    <button type="button" onClick={() => setModalStock(Math.max(0, modalStock - 1))} className="w-10 h-10 flex items-center justify-center text-zinc-400 hover:text-rose-500"><i className="fa-solid fa-minus"></i></button>
-                    <input type="number" className="flex-1 bg-transparent text-center text-2xl font-black text-zinc-900 italic outline-none" value={modalStock} onChange={(e) => setModalStock(parseInt(e.target.value) || 0)}/>
-                    <button type="button" onClick={() => setModalStock(modalStock + 1)} className="w-10 h-10 flex items-center justify-center text-emerald-500"><i className="fa-solid fa-plus"></i></button>
+                  <div className="flex items-center justify-between bg-zinc-50 border border-zinc-100 rounded-2xl p-1 gap-1 h-[60px] w-full">
+                    <button type="button" onClick={() => setModalStock(Math.max(0, modalStock - 1))} className="w-10 h-10 flex-shrink-0 flex items-center justify-center text-zinc-400 hover:text-rose-500 transition-colors"><i className="fa-solid fa-minus"></i></button>
+                    <input type="number" className="flex-1 min-w-0 bg-transparent text-center text-2xl font-black text-zinc-900 italic outline-none" value={modalStock} onChange={(e) => setModalStock(parseInt(e.target.value) || 0)}/>
+                    <button type="button" onClick={() => setModalStock(modalStock + 1)} className="w-10 h-10 flex-shrink-0 flex items-center justify-center text-emerald-500 hover:text-emerald-600 transition-colors"><i className="fa-solid fa-plus"></i></button>
                   </div>
                 </div>
               </div>
