@@ -1,7 +1,7 @@
 
 import { 
   User, UserStatus, Role, Capability, Wallet, Transaction, TransactionType,
-  RewardItem, Order, OrderStatus, AuditLog, MonthlyChallenge 
+  RewardItem, Order, OrderStatus, AuditLog, MonthlyChallenge, Recognition 
 } from './types';
 
 interface DB {
@@ -11,6 +11,7 @@ interface DB {
   rewardItems: RewardItem[];
   orders: Order[];
   challenges: MonthlyChallenge[];
+  recognitions: Recognition[];
   auditLogs: AuditLog[];
   config: {
     currencyName: string;
@@ -44,6 +45,7 @@ export const INITIAL_DB: DB = {
   ],
   orders: [],
   challenges: [],
+  recognitions: [],
   auditLogs: [],
   config: {
     currencyName: 'tampinhas',

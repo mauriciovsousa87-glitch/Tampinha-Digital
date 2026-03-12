@@ -115,6 +115,28 @@ export enum ChallengeStatus {
   REJECTED = 'REJECTED'
 }
 
+export enum CompanyPrinciple {
+  SONHO = 'O sonho nos motiva a trabalhar juntos com um propósito comum.',
+  GENTE = 'Gente excelente, com liberdade para crescer, é o nosso ativo mais valioso.',
+  DESENVOLVIMENTO = 'Selecionamos e desenvolvemos pessoas que podem ser melhores que nós.',
+  INSATISFACAO = 'Nunca estamos satisfeitos com nossos resultados.',
+  CONSUMIDOR = 'O consumidor é o nosso patrão.',
+  DONOS = 'Somos uma companhia de donos.',
+  SIMPLICIDADE = 'Acreditamos que o bom senso e a simplicidade valem mais que a complexidade.',
+  CUSTOS = 'Gerenciamos nossos custos rigorosamente para liberar recursos para o crescimento.',
+  EXEMPLO = 'Liderar pelo exemplo é o melhor caminho.',
+  INTEGRIDADE = 'Não pegamos atalhos; integridade e consistência são fundamentais.'
+}
+
+export interface Recognition {
+  id: string;
+  fromUserId: string;
+  toUserId: string;
+  principle: CompanyPrinciple;
+  createdAt: string;
+  isRead: boolean;
+}
+
 export interface MonthlyChallenge {
   id: string;
   area: string;
